@@ -1,10 +1,12 @@
 class Solution:
     def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
         cnt = 0
-        path ,pre_record = [0] , {}
+        path = [0]
         for num in nums:
             path.append(path[-1] + num)
-            pre_record[path[-1] + num] = 0
+
+        import collections
+        pre_record = collections.defaultdict(int)
 
         for pre_sum in path:
             for targ in range(lower, upper+1):
