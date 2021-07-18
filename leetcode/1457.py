@@ -25,7 +25,7 @@ class Solution:
             # next step
             if is_leaf(node):
                 odd_cnt = 0
-                for index ,val in path.items():
+                for index ,val in self.path.items():
                     if val % 2 == 1:
                         odd_cnt += 1
                     if odd_cnt == 2:
