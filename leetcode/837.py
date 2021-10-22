@@ -2,7 +2,10 @@ class Solution:
     def new21Game(self, n: int, k: int, maxPts: int) -> float:
         # dp[i] means problity to get i points
         # dp[i] = sum(dp[i-k]*(1/maxPts) where k in range(1, maxPts))
-    
+        # improve:
+        # maintain a sliding window 
+        # dp[i] = sum(dp[window start:window end]) * basicprob 
+        
         if k == 0:
             return 1
         if n == 0:
@@ -12,19 +15,16 @@ class Solution:
         dp[0] = 1
 
         basicProb = 1 / maxPts
+        SumWindow = 1
 
-        for i in range(1, k):
-            start , end = max(0, i-maxPts), i - 1
-            dp[i] = sum(dp[start:end+1]) * basicProb
+        for i in range(1, n+1):
+            dp[i] = SumWindow * basicProb
+            if i < k:
+                SumWindow += dp[i]
+            if  i - maxPts >= 0 and i - maxPts < k:
+                SumWindow -= dp[i - maxPts]
+            
 
-        targ, res = n + 1 , 0
-        start , end = max(targ - maxPts, 0), k - 1
-        if start > end:
-            return 1
-        else:
-            for i in range(start, end+1):
-                res += dp[i] * basicProb * (maxPts - (targ - i) + 1)
-                
-            return 1 - res
-
-# time limit
+        ans  = sum(dp[k:n+1])
+        #print(dp)
+        return ans
